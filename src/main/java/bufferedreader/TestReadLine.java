@@ -9,7 +9,6 @@ class TestReadLine {
     BufferedReader in = new EditableBufferedReader(
       new InputStreamReader(System.in));
     String str = null;
-    System.out.println("Diego Hola");
     try {
       str = in.readLine();
     } catch (IOException e) { e.printStackTrace(); }
