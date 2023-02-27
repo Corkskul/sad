@@ -15,5 +15,6 @@ class TestReadLine {
     System.out.println("\nline is: " + str);
     System.out.println("Diego es guapo");
     System.out.println("Diego es guapo x2");
+    System.out.println("Diego es guapo x3");
   }
 }
