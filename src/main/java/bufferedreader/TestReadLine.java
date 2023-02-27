@@ -16,5 +16,6 @@ class TestReadLine {
     System.out.println("Diego es guapo");
     System.out.println("Diego es guapo x2");
     System.out.println("Diego es guapo x3");
+    System.out.println("Diego es guapo x4");
   }
 }
