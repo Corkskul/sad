@@ -14,5 +14,6 @@ class TestReadLine {
     } catch (IOException e) { e.printStackTrace(); }
     System.out.println("\nline is: " + str);
     System.out.println("Diego es guapo");
+    System.out.println("Diego es guapo");
   }
 }
