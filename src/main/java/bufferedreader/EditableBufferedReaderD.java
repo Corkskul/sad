@@ -13,10 +13,11 @@ public class EditableBufferedReaderD extends BufferedReader {
     public static final int RIGHT = 67;
     public static final int CORCHETE = 91;
     public static final int CR = 13;
+    Line line = new Line();
 
     public EditableBufferedReaderD(Reader in) {
         super(in);
-        
+
         setRaw();
 
     }
@@ -72,12 +73,12 @@ public class EditableBufferedReaderD extends BufferedReader {
 
         while ((c = read()) != -1 && c != '\n') {
             if (c == DELETE || c == BACKSPACE) {
-                Line.remove();
+                line.remove();
             } else if (c == CR) {
                 System.out.print("\r\n");
                 break;
             } else {
-                Line.add((char) c);
+                line.add((char) c);
             }
         }
         unsetRaw();
