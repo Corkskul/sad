@@ -16,6 +16,7 @@ public class EditableBufferedReaderD extends BufferedReader {
 
     public EditableBufferedReaderD(Reader in) {
         super(in);
+        
         setRaw();
 
     }
@@ -71,16 +72,12 @@ public class EditableBufferedReaderD extends BufferedReader {
 
         while ((c = read()) != -1 && c != '\n') {
             if (c == DELETE || c == BACKSPACE) {
-                if (sb.length() > 0) {
-                    sb.deleteCharAt(sb.length() - 1);
-                }
+                Line.remove();
             } else if (c == CR) {
                 System.out.print("\r\n");
                 break;
             } else {
-                System.out.print((char) c);
-                sb.append((char) c);
-                //Nota
+                Line.add((char) c);
             }
         }
         unsetRaw();

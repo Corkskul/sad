@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 
 class TestReadLine {
   public static void main(String[] args) {
-    BufferedReader in = new EditableBufferedReader(
+    BufferedReader in = new EditableBufferedReaderD(
       new InputStreamReader(System.in));
     String str = null;
     try {
