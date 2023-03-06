@@ -15,8 +15,9 @@ public class Line {
     }
     public int size(){
         return sb.length();
+        //eso es un comentario
     }
 
-    
+
 }
 
