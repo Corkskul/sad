@@ -13,4 +13,10 @@ public class Line {
             sb.deleteCharAt(sb.length() - 1);
         }
     }
+    public int size(){
+        return sb.length();
+    }
+
+    
 }
+

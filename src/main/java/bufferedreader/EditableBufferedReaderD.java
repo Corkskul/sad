@@ -13,11 +13,12 @@ public class EditableBufferedReaderD extends BufferedReader {
     public static final int RIGHT = 67;
     public static final int CORCHETE = 91;
     public static final int CR = 13;
+    private int pos;
     Line line = new Line();
 
     public EditableBufferedReaderD(Reader in) {
         super(in);
-
+        pos = 0;
         setRaw();
 
     }
@@ -53,8 +54,12 @@ public class EditableBufferedReaderD extends BufferedReader {
 
             if (c1 == CORCHETE) {
                 if (c2 == LEFT) {
-                    System.out.print("\033[D");
-                } else if (c2 == RIGHT) {
+                    if(pos>0){
+                        pos--;
+                        System.out.print("\033[D");
+                    }
+                } else if (c2 == RIGHT && pos < line.size()) {
+                    pos++;
                     System.out.print("\033[C");
                 }
             }
@@ -74,10 +79,12 @@ public class EditableBufferedReaderD extends BufferedReader {
         while ((c = read()) != -1 && c != '\n') {
             if (c == DELETE || c == BACKSPACE) {
                 line.remove();
+                pos--;
             } else if (c == CR) {
                 System.out.print("\r\n");
                 break;
             } else {
+                pos++;
                 line.add((char) c);
                 //test
             }
