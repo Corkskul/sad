@@ -13,12 +13,17 @@ public class EditableBufferedReaderD extends BufferedReader {
     public static final int RIGHT = 67;
     public static final int CORCHETE = 91;
     public static final int CR = 13;
-    private int pos;
+    public static final int UP = 65;
+    public static final int DOWN = 66;
+    public static final int HOME = 72;
+    public static final int END = 70;
+    //int pos = 0;
+
     Line line = new Line();
 
     public EditableBufferedReaderD(Reader in) {
         super(in);
-        pos = 0;
+
         setRaw();
 
     }
@@ -48,51 +53,66 @@ public class EditableBufferedReaderD extends BufferedReader {
     public int read() throws IOException {
         int c = super.read();
 
-        if (c == ESCAPE) {
-            int c1 = super.read();
-            int c2 = super.read();
-
-            if (c1 == CORCHETE) {
-                if (c2 == LEFT) {
-                    if(pos>0){
-                        pos--;
-                        System.out.print("\033[D");
-                    }
-                } else if (c2 == RIGHT && pos < line.size()) {
-                    pos++;
-                    System.out.print("\033[C");
-                }
-            }
-        } else if (c == DELETE || c == BACKSPACE) {
-            System.out.print("\b \b");
-        }
-
         return c;
     }
 
     @Override
     public String readLine() throws IOException {
-
-        StringBuilder sb = new StringBuilder();
+        int pos = 0;
         int c;
 
-        while ((c = read()) != -1 && c != '\n') {
-            if (c == DELETE || c == BACKSPACE) {
-                line.remove();
-                pos--;
-            } else if (c == CR) {
-                System.out.print("\r\n");
-                break;
-            } else {
+        while ((c = read()) != -1 && c != CR) {
+            if (c == 27) {
+                // Escape sequence
+                c = read();
+
+                if (c == CORCHETE) {
+                    c = read();
+
+                    if (c == LEFT) {
+                        // Move cursor left
+                        if (pos > 0) {
+                            System.out.print("\033[D");
+                            pos--;
+                        }
+                    } else if (c == RIGHT) {
+                        // Move cursor right
+                        if (pos < line.str.length()) {
+                            System.out.print("\033[C");
+                            pos++;
+                        }
+                    }else if (c == HOME) {
+                        // Move cursor to the beginning of the line
+                        System.out.print("\033[1~");
+                        pos = 0;
+                    } else if (c == END) {
+                        // Move cursor to the end of the line
+                        System.out.print("\033[4~");
+                        pos = line.str.length();
+                    }
+                }
+
+                continue;
+            }
+
+            if (c == BACKSPACE || c == DELETE) {
+                // Backspace/delete
+                if (pos > 0) {
+                    line.delete(pos - 1);;
+                    pos--;
+                    System.out.print("\033[D");
+                    System.out.print("\033[P");
+                }
+            } else if (c >= 32 && c < 127) {
+                // Insert character
+                line.addChar(pos, (char) c);;
                 pos++;
-                line.add((char) c);
-                //test
+                System.out.print((char) c);
+
             }
         }
         unsetRaw();
-
-        return sb.toString();
-
+        return line.toString();
     }
 
 }

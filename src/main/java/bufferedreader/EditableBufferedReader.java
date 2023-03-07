@@ -74,7 +74,7 @@ public class EditableBufferedReader extends BufferedReader {
                 if (sb.length() > 0) {
                     sb.deleteCharAt(sb.length() - 1);
                 }
-            } else if (c == CR) {
+            } else if (c == CR){
                 System.out.print("\r\n");
                 break;
             } else {
