@@ -3,6 +3,7 @@ package bufferedreader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Scanner;
 
 public class EditableBufferedReaderD extends BufferedReader {
     public static final int ESCAPE = 27;
@@ -13,13 +14,11 @@ public class EditableBufferedReaderD extends BufferedReader {
     public static final int RIGHT = 67;
     public static final int CORCHETE = 91;
     public static final int CR = 13;
-    private int pos;
+    public static final int UP = 65;
     Line line = new Line();
 
     public EditableBufferedReaderD(Reader in) {
         super(in);
-        pos = 0;
-        setRaw();
 
     }
 
@@ -43,55 +42,51 @@ public class EditableBufferedReaderD extends BufferedReader {
         }
 
     }
+    
 
     @Override
     public int read() throws IOException {
         int c = super.read();
-
-        if (c == ESCAPE) {
-            int c1 = super.read();
-            int c2 = super.read();
-
-            if (c1 == CORCHETE) {
-                if (c2 == LEFT) {
-                    if(pos>0){
-                        pos--;
-                        System.out.print("\033[D");
-                    }
-                } else if (c2 == RIGHT && pos < line.size()) {
-                    pos++;
-                    System.out.print("\033[C");
-                }
-            }
-        } else if (c == DELETE || c == BACKSPACE) {
-            System.out.print("\b \b");
-        }
-
         return c;
     }
 
+
+//programa la clase readLine() usando Scanner
+
     @Override
     public String readLine() throws IOException {
-
-        StringBuilder sb = new StringBuilder();
         int c;
+        setRaw();
 
         while ((c = read()) != -1 && c != '\n') {
+            if (c == ESCAPE) {
+                int c1 = super.read();
+                int c2 = super.read();
+    
+                if (c1 == CORCHETE) {
+                    if (c2 == LEFT) {
+                        line.moveLeft();
+                    } else if (c2 == RIGHT) {
+                        line.moveRight();
+                    }
+                    else if(c2 == UP){
+                        line.where();
+                    }
+                }
+            } 
             if (c == DELETE || c == BACKSPACE) {
                 line.remove();
-                pos--;
             } else if (c == CR) {
                 System.out.print("\r\n");
                 break;
             } else {
-                pos++;
                 line.add((char) c);
                 //test
             }
         }
         unsetRaw();
 
-        return sb.toString();
+        return line.toString();
 
     }
 
