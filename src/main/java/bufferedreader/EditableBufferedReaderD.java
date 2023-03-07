@@ -3,7 +3,7 @@ package bufferedreader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Scanner;
+//import java.util.Scanner;
 
 public class EditableBufferedReaderD extends BufferedReader {
     public static final int ESCAPE = 27;
@@ -74,9 +74,10 @@ public class EditableBufferedReaderD extends BufferedReader {
                     }
                 }
             } 
-            if (c == DELETE || c == BACKSPACE) {
+            else if (c == DELETE || c == BACKSPACE) {
                 line.remove();
-            } else if (c == CR) {
+            } 
+            else if (c == CR) {
                 System.out.print("\r\n");
                 break;
             } else {
