@@ -82,7 +82,6 @@ public class EditableBufferedReaderD extends BufferedReader {
                 break;
             } else {
                 line.add((char) c);
-                //test
             }
         }
         unsetRaw();
