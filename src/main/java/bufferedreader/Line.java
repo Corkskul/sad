@@ -3,7 +3,7 @@ package bufferedreader;
 
 public class Line {
     static StringBuilder sb = new StringBuilder();
-    private int CurrentIndex = 1;
+    private int CurrentIndex = 0;
 
     public void add(char c) {
         System.out.print((char) c);
@@ -36,9 +36,16 @@ public class Line {
             System.out.print("\033[C");
         }
     }
-    public void where(){
-        System.out.print(CurrentIndex);
-    }
+    public void home(){
+        CurrentIndex = 0;
+        System.out.print("\033[H");
+        }
+    
+    public void end(){
+        CurrentIndex = sb.length();
+        System.out.print("\033[F");
+        }
+    
     public String toString(){
         return sb.toString();
     }

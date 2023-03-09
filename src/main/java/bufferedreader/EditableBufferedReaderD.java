@@ -14,7 +14,8 @@ public class EditableBufferedReaderD extends BufferedReader {
     public static final int RIGHT = 67;
     public static final int CORCHETE = 91;
     public static final int CR = 13;
-    public static final int UP = 65;
+    public static final int HOME = 72;
+    public static final int FINAL = 70;
     Line line = new Line();
 
     public EditableBufferedReaderD(Reader in) {
@@ -32,6 +33,7 @@ public class EditableBufferedReaderD extends BufferedReader {
         }
 
     }
+    
 
     public void unsetRaw() {
         try {
@@ -49,15 +51,12 @@ public class EditableBufferedReaderD extends BufferedReader {
         int c = super.read();
         return c;
     }
-
-
-//programa la clase readLine() usando Scanner
-
     @Override
     public String readLine() throws IOException {
         int c;
         setRaw();
-
+        System.out.print("\033[H\033[2J");
+        
         while ((c = read()) != -1 && c != '\n') {
             if (c == ESCAPE) {
                 int c1 = super.read();
@@ -69,8 +68,11 @@ public class EditableBufferedReaderD extends BufferedReader {
                     } else if (c2 == RIGHT) {
                         line.moveRight();
                     }
-                    else if(c2 == UP){
-                        line.where();
+                    else if(c2 == HOME){
+                        line.home();
+                    }
+                    else if(c2 == FINAL){
+                        line.end();
                     }
                 }
             } 
