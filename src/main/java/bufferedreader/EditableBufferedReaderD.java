@@ -3,6 +3,7 @@ package bufferedreader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+//import java.util.Scanner;
 
 public class EditableBufferedReaderD extends BufferedReader {
     public static final int ESCAPE = 27;
@@ -13,13 +14,12 @@ public class EditableBufferedReaderD extends BufferedReader {
     public static final int RIGHT = 67;
     public static final int CORCHETE = 91;
     public static final int CR = 13;
-    private int pos;
+    public static final int HOME = 72;
+    public static final int FINAL = 70;
     Line line = new Line();
 
     public EditableBufferedReaderD(Reader in) {
         super(in);
-        pos = 0;
-        setRaw();
 
     }
 
@@ -33,6 +33,7 @@ public class EditableBufferedReaderD extends BufferedReader {
         }
 
     }
+    
 
     public void unsetRaw() {
         try {
@@ -43,55 +44,51 @@ public class EditableBufferedReaderD extends BufferedReader {
         }
 
     }
+    
 
     @Override
     public int read() throws IOException {
         int c = super.read();
-
-        if (c == ESCAPE) {
-            int c1 = super.read();
-            int c2 = super.read();
-
-            if (c1 == CORCHETE) {
-                if (c2 == LEFT) {
-                    if(pos>0){
-                        pos--;
-                        System.out.print("\033[D");
-                    }
-                } else if (c2 == RIGHT && pos < line.size()) {
-                    pos++;
-                    System.out.print("\033[C");
-                }
-            }
-        } else if (c == DELETE || c == BACKSPACE) {
-            System.out.print("\b \b");
-        }
-
         return c;
     }
-
     @Override
     public String readLine() throws IOException {
-
-        StringBuilder sb = new StringBuilder();
         int c;
-
+        setRaw();
+        System.out.print("\033[H\033[2J");
+        
         while ((c = read()) != -1 && c != '\n') {
-            if (c == DELETE || c == BACKSPACE) {
+            if (c == ESCAPE) {
+                int c1 = super.read();
+                int c2 = super.read();
+    
+                if (c1 == CORCHETE) {
+                    if (c2 == LEFT) {
+                        line.moveLeft();
+                    } else if (c2 == RIGHT) {
+                        line.moveRight();
+                    }
+                    else if(c2 == HOME){
+                        line.home();
+                    }
+                    else if(c2 == FINAL){
+                        line.end();
+                    }
+                }
+            } 
+            else if (c == DELETE || c == BACKSPACE) {
                 line.remove();
-                pos--;
-            } else if (c == CR) {
+            } 
+            else if (c == CR) {
                 System.out.print("\r\n");
                 break;
             } else {
-                pos++;
                 line.add((char) c);
-                //test
             }
         }
         unsetRaw();
 
-        return sb.toString();
+        return line.toString();
 
     }
 
