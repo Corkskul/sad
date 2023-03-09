@@ -74,6 +74,13 @@ public class EditableBufferedReaderD extends BufferedReader {
                     else if(c2 == FINAL){
                         line.end();
                     }
+                    else if(c2 == 50){
+                        int c3 = super.read();
+                        if(c3 == 126){
+                            line.insert();
+                        }
+                    }
+
                 }
             } 
             else if (c == DELETE || c == BACKSPACE) {
