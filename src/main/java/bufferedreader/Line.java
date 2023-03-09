@@ -5,18 +5,32 @@ public class Line {
     static StringBuilder sb = new StringBuilder();
     private int CurrentIndex = 0;
 
+
     public void add(char c) {
-        System.out.print((char) c);
-        sb.append((char) c);
+        System.out.print((char)c);
+        sb.append((char)c);
         CurrentIndex = CurrentIndex + 1;
     }
-
-    public void remove() {
-        if (sb.length() > 0) {
-            sb.deleteCharAt(sb.length() - 1);
+    public void delete() {
+        if (CurrentIndex > 0) {
+            sb.deleteCharAt(CurrentIndex - 1);
+            CurrentIndex--;
             System.out.print("\b \b");
+
         }
+
     }
+
+
+
+
+
+
+
+
+
+
+
     public int size(){
         return sb.length();
         //eso es un comentario

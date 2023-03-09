@@ -15,7 +15,7 @@ public class EditableBufferedReaderD extends BufferedReader {
     public static final int CORCHETE = 91;
     public static final int CR = 13;
     public static final int HOME = 72;
-    public static final int FINAL = 70;
+    public static final int END = 70;
     Line line = new Line();
 
     public EditableBufferedReaderD(Reader in) {
@@ -71,13 +71,13 @@ public class EditableBufferedReaderD extends BufferedReader {
                     else if(c2 == HOME){
                         line.home();
                     }
-                    else if(c2 == FINAL){
+                    else if(c2 == END){
                         line.end();
                     }
                 }
             }
             else if (c == DELETE || c == BACKSPACE) {
-                line.remove();
+                line.delete();
             }
             else if (c == CR) {
                 System.out.print("\r\n");
