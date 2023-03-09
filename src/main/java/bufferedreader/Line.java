@@ -4,6 +4,7 @@ package bufferedreader;
 public class Line {
     static StringBuilder sb = new StringBuilder();
     private int CurrentIndex = 0;
+    private boolean insert_ON = false;
 
     public void add(char c) {
         System.out.print((char) c);
@@ -12,9 +13,13 @@ public class Line {
     }
 
     public void remove() {
-        if (sb.length() > 0) {
-            sb.deleteCharAt(sb.length() - 1);
-            System.out.print("\b \b");
+        if (CurrentIndex > 0) {
+            sb.deleteCharAt(CurrentIndex - 1);
+            CurrentIndex = CurrentIndex - 1;
+            System.out.print("\033[1D");
+            System.out.print("\033[K");
+            System.out.print(sb.substring(CurrentIndex));
+            System.out.print("\033[" + (sb.length() - CurrentIndex) + "D");
         }
     }
     public int size(){
@@ -40,11 +45,14 @@ public class Line {
         CurrentIndex = 0;
         System.out.print("\033[H");
         }
-    
+    //Arreglar lo del primer final no va bien.
     public void end(){
         CurrentIndex = sb.length();
-        System.out.print("\033[F");
+        System.out.print("\033[1;"+ sb.length() + "H");
         }
+    public void insert(){
+        insert_ON = !insert_ON;
+    }
     
     public String toString(){
         return sb.toString();
