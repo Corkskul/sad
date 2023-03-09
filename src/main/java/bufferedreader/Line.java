@@ -3,7 +3,7 @@ package bufferedreader;
 
 public class Line {
     static StringBuilder sb = new StringBuilder();
-    private int CurrentIndex = 1;
+    private int CurrentIndex = 0;
 
     public void add(char c) {
         System.out.print((char) c);
@@ -19,6 +19,7 @@ public class Line {
     }
     public int size(){
         return sb.length();
+        //eso es un comentario
     }
     public boolean hasNext(){
         return sb.length()> CurrentIndex;
@@ -36,107 +37,21 @@ public class Line {
             System.out.print("\033[C");
         }
     }
-    public void where(){
-        System.out.print(CurrentIndex);
-    }
+    public void home(){
+        CurrentIndex = 0;
+        System.out.print("\033[H");
+        }
+
+    public void end(){
+        CurrentIndex = sb.length();
+        System.out.print("\033[F");
+        }
+
     public String toString(){
         return sb.toString();
     }
 
 
+
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*package bufferedreader;
-
-class Line {
-    public StringBuilder str;
-
-    public Line() {
-        str = new StringBuilder();
-    }
-
-    public void delete(int pos) {
-        if (pos > 0 && pos <= str.length()) {
-            str.deleteCharAt(pos-1);
-        }
-
-    }
-
-    public void addChar(int c, int pos) {
-        if (pos <= str.length()) {
-        str.insert(pos, (char) c);
-        }
-    }
-
-    public String toString() {
-        return str.toString();
-    }
-}
-*/
-
-/*
- * import java.util.ArrayList;
- *
- * public class Line {
- *
- * private ArrayList<Character> str;
- *
- * public Line() {
- * str = new ArrayList<>();
- * }
- *
- * public String delete(int pos) {
- * if (pos > 1) {
- * str.remove(pos - 1);
- * }
- * return listToString(str);
- * }
- *
- * public String addChar(int c, int pos) {
- * str.add(pos - 1, (char) c);
- * return listToString(str);
- * }
- *
- * private String listToString(ArrayList<Character> list) {
- * StringBuilder sb = new StringBuilder();
- * for (char c : list) {
- * sb.append(c);
- * }
- * return sb.toString();
- * }
- * }
- */
