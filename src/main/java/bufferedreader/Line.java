@@ -44,7 +44,7 @@ public class Line {
 
     public void end(){
         CurrentIndex = sb.length();
-        System.out.print("\033[F");
+        System.out.print("\033[1;"+ CurrentIndex + "H");
         }
 
     public String toString(){
